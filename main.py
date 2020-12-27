@@ -10,8 +10,9 @@ from microcenter import MicrocenterBuddy
 
 PRODUCTS = []
 MINNESOTA_STORE_ID = "045"
+CHROME_DRIVER_LOCATION = ""
 
-MICROCENTER_BUDDY = MicrocenterBuddy()
+MICROCENTER_BUDDY = None
 
 MAX_SLEEP_SECONDS = 60 * 2
 
@@ -19,6 +20,10 @@ def setup():
     setup_logging()
     setup_argument_parsing()
     setup_product_data()
+
+    global MICROCENTER_BUDDY
+
+    MICROCENTER_BUDDY = MicrocenterBuddy(CHROME_DRIVER_LOCATION)
 
 def setup_logging():
     logging_format = "[%(name)s] %(asctime)s: %(message)s"
@@ -37,54 +42,21 @@ def setup_argument_parsing():
         description='A sample description of the application'
     )
 
-    """
-    Example of a positional style argument
-    
     parser.add_argument(
-        'integers',
-        dest='integers'
+        '-cd', '--chrome_driver',
+        dest='chrome_driver',
+        required=True
     )
-    """
-
-    """
-    Example of a named 'non-positional' style argument
-    
-    parser.add_argument(
-        '-o', '--output',
-        dest='output_directory',
-        required=False,
-        default='output'
-    )
-    """
-
-    """
-    Example of a boolean 'store_true' style argument
-    
-    
-    parser.add_argument(
-        '--skipBack',
-        dest='skip_copy_back',
-        action='store_true',
-        required=False,
-        default=False
-    )
-    """
 
     args = parser.parse_args()
 
-    configure_globals()    
+    configure_globals(args.chrome_driver)
 
-def configure_globals():
+def configure_globals(chrome_driver_directory: str):
 
-    """
-    Configuration settings should be passed in as arguments to this
-    function and set in the following form
+    global CHROME_DRIVER_LOCATION
 
-    global SAMPLE_ARGUMENT
-
-    SAMPLE_ARGUMENT = sample_argument
-    """
-    pass
+    CHROME_DRIVER_LOCATION = chrome_driver_directory
 
 def setup_product_data():
 

@@ -7,22 +7,21 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from util import ProductData, construct_url_for_product, clean_stock_string
 
-CHROME_DRIVER_LOCATION = "/Users/forsythetony/Documents/Coding/drivers/chromedriver"
 WEB_TIMEOUT = 30
 TOTAL_RETRIES = 2
 
-def build_web_driver():
+def build_web_driver(driver_location: str):
     option = webdriver.ChromeOptions()
     option.add_argument('— incognito')
 
-    driver = webdriver.Chrome(executable_path=CHROME_DRIVER_LOCATION, chrome_options=option)
+    driver = webdriver.Chrome(executable_path=driver_location, chrome_options=option)
     driver.set_page_load_timeout(WEB_TIMEOUT)
     return driver
 
 class MicrocenterBuddy:
 
-    def __init__(self) -> None:
-        self.chrome_driver = build_web_driver()
+    def __init__(self, chrome_driver_location: str) -> None:
+        self.chrome_driver = build_web_driver(chrome_driver_location)
 
     def total_product_count(self, product_info: ProductData) -> int:
        try:
