@@ -15,6 +15,8 @@ def build_web_driver(driver_location: str):
     option.add_argument('— incognito')
     option.headless = True
     option.add_argument("--window-size=1920,1200")
+    option.add_argument("--no-sandbox");
+    option.add_argument("--disable-dev-shm-usage");
 
     driver = webdriver.Chrome(executable_path=driver_location, chrome_options=option)
     driver.set_page_load_timeout(WEB_TIMEOUT)
