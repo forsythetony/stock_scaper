@@ -12,7 +12,8 @@ from util import (
     Config, 
     load_config, 
     build_local_path,
-    simple_timestamp
+    simple_timestamp,
+    current_datetime_cst
 )
 from microcenter import MicrocenterBuddy
 
@@ -20,6 +21,7 @@ from sns import SnsWrapper
 
 PRODUCTS = []
 CHROME_DRIVER_LOCATION = ""
+IS_TESTING = False
 
 MICROCENTER_BUDDY = None
 
@@ -61,8 +63,8 @@ def setup_logging():
     )
 
     #   Suppress loggers I don't really care about
-    # for logger in [log.getLogger(name) for name in log.root.manager.loggerDict]:
-    #     logger.setLevel(log.WARN)
+    for logger in [log.getLogger(name) for name in log.root.manager.loggerDict]:
+        logger.setLevel(log.WARN)
 
 def setup_argument_parsing():
     parser = argparse.ArgumentParser(
@@ -75,15 +77,23 @@ def setup_argument_parsing():
         required=True
     )
 
+    parser.add_argument(
+        '-t',
+        dest='is_testing',
+        action='store_true'
+    )
+
     args = parser.parse_args()
 
-    configure_globals(args.chrome_driver)
+    configure_globals(args.chrome_driver, args.is_testing)
 
-def configure_globals(chrome_driver_directory: str):
+def configure_globals(chrome_driver_directory: str, is_testing: str):
 
     global CHROME_DRIVER_LOCATION
+    global IS_TESTING
 
     CHROME_DRIVER_LOCATION = chrome_driver_directory
+    IS_TESTING = is_testing
 
 def setup_product_data():
 
@@ -110,8 +120,6 @@ def send_in_stock_message(product: ProductData, stock_count: int):
         message
     )
 
-    time.sleep(3)
-
 def search_for_stock():
 
     curr_index = 0
@@ -135,18 +143,27 @@ def search_for_stock():
         else:
             log.info("Not search for product because it's not the right time")
         
-        seconds_to_sleep = random.randint(0, CONFIG.max_sleep_seconds)
+        seconds_to_sleep = random.randint(CONFIG.min_sleep_seconds, CONFIG.max_sleep_seconds)
         log.info(f"Going to go to sleep for {seconds_to_sleep} seconds")
         time.sleep(seconds_to_sleep)
-   
+
+def test():
+    current_datetime = current_datetime_cst()
+    log.info(f"The current time in CST is {simple_timestamp(current_datetime)}")
+
+    log.info(f"The current hour is {current_datetime.hour}")
+
 def main():
-    setup()
     SNS.publish_message(
         'Starting up',
         f"Started searching for {len(PRODUCTS)} products at {simple_timestamp()}"
     )
     search_for_stock()
-    
 
 if __name__ == "__main__":
-    main()
+    setup()
+
+    if IS_TESTING:
+        test()
+    else:
+        main()

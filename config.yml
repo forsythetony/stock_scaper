@@ -1,3 +1,4 @@
 aws_region: 'us-east-2'
 aws_topic_arn: 'arn:aws:sns:us-east-2:220387809337:in-stock-notifications'
-max_sleep_seconds: 60
+max_sleep_seconds: 300
+min_sleep_seconds: 60
