@@ -4,7 +4,6 @@ import argparse
 import logging as log
 import random
 import time
-from datetime import datetime
 
 from util import (
     ProductData, build_directory_path_for_yaml, construct_url_for_product, 
@@ -105,7 +104,7 @@ def setup_product_data():
         PRODUCTS = read_tuples_from_file(file)
 
 def should_search():
-    now = datetime.now()
+    now = current_datetime_cst()
 
     return now.hour >= 6
 
@@ -153,7 +152,7 @@ def test():
 def main():
     SNS.publish_message(
         'Starting up',
-        f"Started searching for {len(PRODUCTS)} products at {simple_timestamp()}"
+        f"Started searching for {len(PRODUCTS)} products at {simple_timestamp(current_datetime_cst())} CST"
     )
     search_for_stock()
 
