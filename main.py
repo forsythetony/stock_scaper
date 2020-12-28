@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 
 from util import (
-    ProductData, build_directory_path_for_yaml, 
+    ProductData, build_directory_path_for_yaml, construct_url_for_product, 
     read_tuples_from_file, 
     Config, 
     load_config, 
@@ -102,6 +102,8 @@ def should_search():
 def send_in_stock_message(product: ProductData, stock_count: int):
     
     message = f"{product.simple_name} is in stock! [{stock_count}]"
+    message += "\n\n"
+    message += construct_url_for_product(product)
 
     SNS.publish_message(
         'In stock!',
