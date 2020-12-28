@@ -126,7 +126,7 @@ def search_for_stock():
 
     while True:
         product_index = curr_index % len(PRODUCTS)
-        log.info(f"Build a proudct index of {product_index}")
+        log.info(f"Built a product index of {product_index}")
         product = PRODUCTS[product_index]
         
         if should_search():
@@ -141,17 +141,14 @@ def search_for_stock():
                 log.info("Product count was greater than 0")
                 send_in_stock_message(product, product_count)
         else:
-            log.info("Not search for product because it's not the right time")
+            log.info("Not searching for product because it's not the right time...")
         
         seconds_to_sleep = random.randint(CONFIG.min_sleep_seconds, CONFIG.max_sleep_seconds)
         log.info(f"Going to go to sleep for {seconds_to_sleep} seconds")
         time.sleep(seconds_to_sleep)
 
 def test():
-    current_datetime = current_datetime_cst()
-    log.info(f"The current time in CST is {simple_timestamp(current_datetime)}")
-
-    log.info(f"The current hour is {current_datetime.hour}")
+    pass
 
 def main():
     SNS.publish_message(
