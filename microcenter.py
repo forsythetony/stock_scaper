@@ -25,6 +25,7 @@ def build_web_driver(driver_location: str):
 class MicrocenterBuddy:
 
     def __init__(self, chrome_driver_location: str) -> None:
+        self.chrome_driver_location = chrome_driver_location
         self.chrome_driver = build_web_driver(chrome_driver_location)
 
     def total_product_count(self, product_info: ProductData) -> int:
@@ -36,6 +37,10 @@ class MicrocenterBuddy:
 
     def _retrieve_product_count_string(self, product_info: ProductData, retry_count: int = 0) -> str:
         
+        #   If it always fails then why not just reload it every time. Although I don't
+        #   know why it doesn't just make the request.
+        self._reload_driver()
+
         product_url = construct_url_for_product(product_info)
 
         if retry_count >= TOTAL_RETRIES:
@@ -76,5 +81,5 @@ class MicrocenterBuddy:
         if self.chrome_driver is not None:
             self.chrome_driver.quit()
 
-        self.chrome_driver = build_web_driver()
+        self.chrome_driver = build_web_driver(self.chrome_driver_location)
 

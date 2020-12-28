@@ -1,20 +1,25 @@
 from collections import namedtuple
 from io import TextIOWrapper
-from typing import Sequence
+from typing import Sequence, TextIO
 import logging as log
 import yaml
 import os
+from datetime import datetime
 
+SIMPLE_TIMESTAMP_FORMAT = "%d/%m/%Y %H:%M:%S"
 ASSET_FOLDER_NAME = 'assets'
 MICROCENTER_BASE_URL = "https://www.microcenter.com/product/"
 
 ProductData = namedtuple('ProductData', 'store_id, product_id, simple_name, full_name')
+Config = namedtuple('Config', 'aws_region, aws_topic_arn, max_sleep_seconds')
 
 def build_directory_path_for_yaml(yaml_file_name: str):
-    return os.path.join(
+    return build_local_path(ASSET_FOLDER_NAME, yaml_file_name)
+
+def build_local_path(*path_components):
+        return os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
-        ASSET_FOLDER_NAME,
-        yaml_file_name
+        *path_components
     )
 
 def print_product_info_list(productInfoList: Sequence[ProductData]):
@@ -46,3 +51,13 @@ def remove_non_digits(string: str) -> str:
 def clean_stock_string(stock_str: str) -> str:
     
     return remove_non_digits(stock_str.strip().lower())
+
+def load_config(config_file: TextIOWrapper) -> Config:
+
+    loaded_config = yaml.safe_load(config_file)
+
+    return Config(**loaded_config)
+
+def simple_timestamp():
+    now = datetime.now()
+    return now.strftime("%d/%m/%Y %H:%M:%S")

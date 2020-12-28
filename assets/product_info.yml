@@ -2,10 +2,6 @@
   product_id: '631927'
   simple_name: EVGA RTX 3060
   store_id: '045'
-- full_name: intel-core-i7-9700k-coffee-lake-36ghz-eight-core-lga-1151-boxed-processor
-  product_id: '512484'
-  simple_name: Product Image View 0Product Image View 1Product Image View 2 intel LogoIntel Core i7-9700K Coffee Lake 3.6GHz Eight-Core LGA 1151 Boxed Processor
-  store_id: '045'
 - full_name: asus-geforce-rtx-3060-ti-tuf-gaming-overclocked-triple-fan-8gb-gddr6-pcie-40-graphics-card
   product_id: '631469'
   simple_name: ASUS GeForce RTX 3060
@@ -46,3 +42,7 @@
   simple_name: Gigabyte GeForce RTX 3060 Ti Aorus Master Overclocked Triple-Fan 8GB
     GDDR6 PCIe 4.0 Graphics Card
   store_id: '045'
+# - full_name: intel-core-i7-9700k-coffee-lake-36ghz-eight-core-lga-1151-boxed-processor
+#   product_id: '512484'
+#   simple_name: Product Image View 0Product Image View 1Product Image View 2 intel LogoIntel Core i7-9700K Coffee Lake 3.6GHz Eight-Core LGA 1151 Boxed Processor
+#   store_id: '045'
